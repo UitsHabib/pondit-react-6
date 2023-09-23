@@ -1,30 +1,16 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-class Login extends Component {
-  state = {
-    email: "",
-    password: "",
-  };
+function Login() {
+  const [email, setEmail] = useState(""); // ["habib", function (y) {}]
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
 
-  handleEmailChange = (event) => {
-    const updatedEmail = event.target.value;
+  const navigate = useNavigate();
 
-    this.setState({ ...this.state, email: updatedEmail }); // spread operator
-  };
-
-  handlePassword = (event) => {
-    const updatedPassword = event.target.value;
-
-    this.setState({ ...this.state, password: updatedPassword }); // spread operator
-  };
-
-  handleLogin = (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
-
-    const { email, password } = this.state; // object descrtructuing
-
     // axios.
 
     // api method
@@ -34,19 +20,22 @@ class Login extends Component {
     // PUT
     // Patch
 
+    const success = (response) => {
+      setUser(response.data);
+      localStorage.setItem("loggedInUser", true);
+
+      navigate("/counter");
+    };
+
+    function error(err) {
+      console.log(err);
+      alert(err.message);
+    }
+
     const body = {
       username: email,
       password,
     };
-
-    const success = (response) => {
-      this.setState({ ...this.state, user: response.data });
-      localStorage.setItem("loggedInUser", true);
-    };
-
-    function error(err) {
-      console.log("=============error login ==============", err);
-    }
 
     axios
       .post("https://dummyjson.com/auth/login", body)
@@ -54,57 +43,46 @@ class Login extends Component {
       .catch(error);
   };
 
-  render() {
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    console.log("====", loggedInUser);
+  return (
+    <div className="container mt-5">
+      <div className="col-lg-6">
+        <form>
+          <div className="mb-3">
+            <label for="email" className="form-label">
+              Email address or Username
+            </label>
 
-    return (
-      <div className="container mt-5">
-        <div className="col-lg-6">
-          {loggedInUser && <Navigate to="/counter" replace={true} />}
+            {/* This input is for  email */}
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              // onClick={}
+              className="form-control"
+              id="email"
+            />
+          </div>
+          <div className="mb-3">
+            <label for="password" className="form-label">
+              Password
+            </label>
 
-          <form>
-            <div className="mb-3">
-              <label for="email" className="form-label">
-                Email address or Username
-              </label>
-
-              {/* This input is for  email */}
-              <input
-                type="email"
-                value={this.state.email}
-                onChange={this.handleEmailChange}
-                // onClick={}
-                className="form-control"
-                id="email"
-              />
-            </div>
-            <div className="mb-3">
-              <label for="password" className="form-label">
-                Password
-              </label>
-
-              {/* This input is for  password */}
-              <input
-                type="password"
-                value={this.state.password}
-                className="form-control"
-                id="password"
-                onChange={this.handlePassword}
-              />
-            </div>
-            <button
-              type="btn"
-              className="btn btn-primary"
-              onClick={this.handleLogin}
-            >
-              Login
-            </button>
-          </form>
-        </div>
+            {/* This input is for  password */}
+            <input
+              type="password"
+              value={password}
+              className="form-control"
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button type="btn" className="btn btn-primary" onClick={handleLogin}>
+            Login
+          </button>
+        </form>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Login;
