@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -42,6 +42,12 @@ function Login() {
       .then(success)
       .catch(error);
   };
+
+  function execute() {
+    console.log("I'm executing....");
+  }
+
+  useEffect(execute, [email, password]);
 
   return (
     <div className="container mt-5">

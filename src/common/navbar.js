@@ -23,7 +23,7 @@ class Navbar extends Component {
             <ul className="navbar-nav">
               <NavItem content={"Home"} Url="/home" />
 
-              <NavItem content={"Offer"} Url="/offer" />
+              <NavItem content={"Users"} Url="/users" />
 
               <NavItem content={"Counters"} Url="/counter" />
 
