@@ -4,6 +4,7 @@ import Navbar from "./common/navbar";
 import Login from "./components/login";
 import { Route, Routes } from "react-router-dom";
 import Users from "./components/users";
+import Todos from "./components/todos";
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
           <Route path="/login" Component={Login} />
           <Route path="/counter" Component={Counter} />
           <Route path="/users" Component={Users} />
+          <Route path="/todos" Component={Todos} />
         </Routes>
       </>
     );

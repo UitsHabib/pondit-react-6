@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Table from "../common/table.component";
+import _ from "lodash";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -19,33 +21,71 @@ function Users() {
 
   useEffect(getUsers, []);
 
+  const columns = [
+    {
+      label: "ID",
+      key: "id",
+      isSortable: true,
+    },
+    {
+      label: "First Name",
+      key: "firstName",
+      isSortable: true,
+    },
+    {
+      label: "Last Name",
+      key: "lastName",
+      isSortable: true,
+    },
+    {
+      label: "Email",
+      key: "email",
+      isSortable: true,
+    },
+    {
+      label: "Username",
+      key: "username",
+      isSortable: true,
+    },
+    {
+      label: "Action",
+      render: () => {
+        return (
+          <td>
+            <button className="btn btn-danger">Delete</button>
+          </td>
+        );
+      },
+    },
+  ];
+
+  const [sortKey, setSortKey] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
+
+  const handleSort = (newSortKey) => {
+    if (sortKey === newSortKey) {
+      if (sortOrder === "asc") {
+        setSortOrder("desc");
+      } else {
+        setSortOrder("asc");
+      }
+    } else {
+      setSortKey(newSortKey);
+      setSortOrder("asc");
+    }
+  };
+
+  const sortedUsers = _.orderBy(users, sortKey, sortOrder);
+
   return (
     <div className="container mt-5">
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Username</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {users.map(function (user) {
-            return (
-              <tr>
-                <th scope="row">{user.id}</th>
-                <td>{user.firstName}</td>
-                <td>{user.lastName}</td>
-                <td>{user.email}</td>
-                <td>{user.username} </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <Table
+        columns={columns}
+        items={sortedUsers}
+        sortKey={sortKey}
+        sortOrder={sortOrder}
+        handleSort={handleSort}
+      />
     </div>
   );
 }

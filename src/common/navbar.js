@@ -25,6 +25,8 @@ class Navbar extends Component {
 
               <NavItem content={"Users"} Url="/users" />
 
+              <NavItem content={"Todos"} Url="/todos" />
+
               <NavItem content={"Counters"} Url="/counter" />
 
               <NavItem content={"Login"} Url="/login" />
